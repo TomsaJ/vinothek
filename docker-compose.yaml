@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  db:
+    image: mysql:latest
+    container_name: mydatabase
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: Vino
+      MYSQL_USER: vino
+      MYSQL_PASSWORD: vino
+    volumes:
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql  # SQL-Initialisierung
+      - /volume1/docker/db:/var/lib/mysql  # Speicherort auf dem Host
+    ports:
+      - "3307:3306"
+
+  app:
+    image: python:3.9-slim
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - "8000:5000"
+    command: python main.py
+    environment:
+      - FLASK_ENV=development # Beispiel für eine Umgebungsvariable (anpassen, falls notwendig)
+      - DB_HOST=localhost
+      - DB_PORT=3306
+      - DB_USER=vino
+      - DB_PASSWORD=vino
+      - DB_NAME=vino
+    network_mode: host
+    entrypoint: >
+      sh -c "
+      pip install --no-cache-dir -r requirements.txt &&
+      python main.py"

@@ -1,3 +1,4 @@
 class WineBottle:
     def getBottle(self):
-        return 0
+
+        return

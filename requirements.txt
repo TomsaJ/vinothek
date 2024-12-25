@@ -1,0 +1,7 @@
+fastapi
+requests
+uvicorn
+pymysql
+itsdangerous
+jinja2
+mysql-connector-python
