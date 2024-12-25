@@ -1,2 +1,18 @@
 <!DOCTYPE html>
-<p>Hello World</p>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/css/style.css') }}">
+    <title>Weinregal</title>
+</head>
+<body>
+<h1>Willkommen in meinem Weinregal!</h1>
+
+
+<div class="weinregal">
+    {{wine | safe}}
+</div>
+
+</body>
+</html>

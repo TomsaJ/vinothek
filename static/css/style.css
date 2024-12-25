@@ -1,0 +1,165 @@
+body {
+    background-color: #f5f5f5;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+.weinregal {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative; /* Für das Regalbrett */
+}
+.regal-brett {
+    position: absolute;
+    width: calc(10 * 60px); /* 10 Flaschen mit 60px Breite (50px Flasche + 10px Margin) */
+    height: 20px; /* Höhe des Regals */
+    background-color: #8B4513; /* Farbe des Regals */
+    top: 120px; /* Position des Regals */
+    z-index: 0; /* Hinter den Flaschen */
+}
+.flasche {
+    position: relative;
+    width: 50px;
+    height: 250px;
+    margin: 10px;
+    transform: perspective(300px) rotateX(35deg);
+    transform-origin: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, z-index 0.3s ease;
+    cursor: pointer;
+    z-index: 1; /* Vor dem Regal */
+}
+.flasche:hover {
+    transform: perspective(400px) rotateX(0deg) scale(1.5);
+    z-index: 10;
+}
+
+/* Flaschenkörper */
+.flasche .körper {
+    background: linear-gradient(to bottom, #800000 0%, #660000 70%, #550000 100%);
+    height: 160px;
+    width: 50px;
+    border-radius: 25px 25px 40% 40%;
+    position: absolute;
+    bottom: -20px; /* Flaschenkörper tiefer positionieren */
+    left: 0;
+    right: 0;
+    box-shadow: inset 0px 0px 8px rgba(0, 0, 0, 0.5);
+    filter: blur(0.5px); /* Leichte Unschärfe für einen gläsernen Effekt */
+}
+.flasche.weißwein .körper {
+    background: linear-gradient(to bottom, #ffffcc 0%, #f2e6d9 70%, #e6ccb2 100%);
+}
+
+/* Flaschenhals */
+.flasche .hals {
+    background: linear-gradient(to bottom, #800000 0%, #660000 100%);
+    height: 90px;
+    width: 18px;
+    position: absolute;
+    bottom: 140px; /* Hals entsprechend tiefer setzen */
+    margin-bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 10px 10px 0 0; /* Sanftere Verjüngung */
+    box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.4);
+}
+.flasche.weißwein .hals {
+    background: linear-gradient(to bottom, #ffffcc 0%, #e6ccb2 100%);
+    margin-bottom: -5px;
+}
+
+/* Korken */
+.flasche .korken {
+    background-color: #8B4513;
+    height: 15px;
+    width: 25px;
+    position: absolute;
+    bottom: 230px; /* Korken tiefer setzen */
+    margin-bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 3px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Etikett */
+.flasche .etikett {
+    position: absolute;
+    bottom: 30px; /* Etikett tiefer setzen */
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.8); /* Leicht transparentes Etikett */
+    border: 1px solid #d1d1d1;
+    height: 62px;
+    width: 40px;
+    border-radius: 5px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    padding-top: 10px;
+    font-size: 8px;
+    font-weight: bold;
+    line-height: 1;
+}
+.flasche .etikett p {
+    margin: 0;
+    font-family: 'Arial', sans-serif; /* Schriftart für Etikett */
+}
+
+/* Untere Flaschen */
+.flasche.unten {
+    margin-top: 20px; /* Abstand für die unteren Flaschen */
+    transform: perspective(300px) rotateX(0deg);
+    z-index: 0; /* Unter den oberen Flaschen */
+}
+
+.zentriert {
+    width: 100%; /* Die Breite des Elements wird auf 100% des Viewports gesetzt */
+    max-width: 1200px; /* Das Element wird nicht breiter als 600 Pixel */
+    margin: 0 auto;
+    text-align: center;
+}
+
+
+
+
+.loader-container {
+    /* Breite des Fortschrittsbalken-Containers */
+    position: relative;
+}
+
+.loader-bg {
+    width: 100%; /* Der graue Hintergrundbalken erstreckt sich über die volle Breite */
+    height: 4px; /* Höhe des Fortschrittsbalkens */
+    border-radius: 30px; /* Abgerundete Ecken */
+    background-color: rgba(0, 0, 0, 0.2); /* Graue Hintergrundfarbe */
+}
+
+.loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%; /* Die Höhe des Fortschrittsbalkens ist dieselbe wie die des Hintergrunds */
+    background-color: green; /* Blaue Farbe für den Fortschrittsbalken */
+    border-radius: 30px
+}
+
+.loader-container {
+    /* Breite des Fortschrittsbalken-Containers */
+    position: relative;
+}
+
+.loader-bg {
+    width: 100%; /* Der graue Hintergrundbalken erstreckt sich über die volle Breite */
+    height: 4px; /* Höhe des Fortschrittsbalkens */
+    border-radius: 30px; /* Abgerundete Ecken */
+    background-color: rgba(0, 0, 0, 0.2); /* Graue Hintergrundfarbe */
+}
+
+.loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%; /* Die Höhe des Fortschrittsbalkens ist dieselbe wie die des Hintergrunds */
+    background-color: green; /* Blaue Farbe für den Fortschrittsbalken */
+    border-radius: 30px
+}
