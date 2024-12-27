@@ -7,23 +7,27 @@ class WineBottle:
     def getBottle(self):
         rows = database.getAllWines()
         htmlContent = ''.join([
-    f"""
-    <div class="flasche" onclick="location.href='/{vino[2]}'">
-        <div class="hals"></div>
-        <div class="körper"></div>
-        <div class="etikett">
-            <p>{vino[2]}</p>
-            <br>
-            <br><br>
-            <p>{vino[7]}</p>
-        </div>
-        <div class="korken"></div>
-    </div>
-    """
-    for vino in rows
-    ])
-
+            self.getBottleHtml(vino)
+            for vino in rows
+        ])
         return htmlContent
+
+    def getBottleHtml(self, vino):
+        bottle = ''.join([
+            f"""
+                    <div class="flasche" onclick="location.href='/{vino[2]}'">
+                        <div class="hals"></div>
+                        <div class="körper"></div>
+                        <div class="etikett">
+                            <p>{vino[2]}</p>
+                            <br>
+                            <br><br>
+                            <p>{vino[7]}</p>
+                        </div>
+                        <div class="korken"></div>
+                    </div>
+                    """])
+        return bottle
 
     def getCountry(country):
         # Mapping von Ländernamen zu den entsprechenden Dateinamen (alle in Kleinbuchstaben)
