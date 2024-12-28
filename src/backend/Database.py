@@ -23,6 +23,16 @@ class Database:
 
     def getAllWines(self):
         cursor = self.connection.cursor()
-        cursor.execute("SELECT *, (SELECT Herkunft From Spezifikation) as Herkunft, (SELECT Jahr FROM Spezifikation) as Jahr FROM Produkt")
+        cursor.execute("SELECT Produkt.*, Spezifikation.Herkunft, Spezifikation.Jahr FROM Produkt LEFT "
+                       "JOIN Spezifikation ON Spezifikation.P_ID = Produkt.ID;")
+        rows = cursor.fetchall()
+        return rows
+
+    def getHouseWines(self):
+        cursor = self.connection.cursor()
+        cursor.execute(
+            "SELECT Produkt.*, Spezifikation.Herkunft, Spezifikation.Jahr FROM Produkt LEFT "
+            "JOIN Spezifikation ON Spezifikation.P_ID = Produkt.ID "
+            "WHERE Produkt.K_ID = 0; ")
         rows = cursor.fetchall()
         return rows

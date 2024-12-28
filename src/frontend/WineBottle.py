@@ -1,3 +1,5 @@
+import os.path
+
 from src.backend.Database import Database
 
 database = Database()
@@ -5,16 +7,22 @@ database = Database()
 class WineBottle:
 
     def getBottle(self):
+        houseWine = database.getHouseWines()
         rows = database.getAllWines()
         htmlContent = ''.join([
-            self.getBottleHtml(vino)
-            for vino in rows
-        ])
+                                  self.getBottleHtml(vino)
+                                  for vino in houseWine
+                              ] + [
+                                  self.getBottleHtml(vino)
+                                  for vino in rows
+                              ])
+
         return htmlContent
 
     def getBottleHtml(self, vino):
-        bottle = ''.join([
-            f"""
+        if vino[4] == None or os.path.exists(vino[4] == None):
+            bottle = ''.join([
+                f"""
                     <div class="flasche" onclick="location.href='/{vino[2]}'">
                         <div class="hals"></div>
                         <div class="körper"></div>
@@ -25,6 +33,12 @@ class WineBottle:
                             <p>{vino[7]}</p>
                         </div>
                         <div class="korken"></div>
+                    </div>
+                    """])
+        else:
+            bottle = ''.join([f"""
+                    <div onclick="location.href='/{vino[2]}'">
+                        <img src='{vino[3]}' alt='{vino[4]}'></div>
                     </div>
                     """])
         return bottle
