@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/css/style.css') }}">
+    <title>Weinregal</title>
+</head>
+<style>
+    head {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 60px;
+}
+    .product-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+    }
+
+    .product-table td {
+        text-align: center;
+        vertical-align: top;
+        padding: 10px;
+        width: 50%; /* Jede Zeile hat immer zwei gleich breite Spalten */
+    }
+
+    .product-table td.empty { /* Heller Hintergrund für leere Zellen */
+    }
+
+    .product-table .head {
+        font-weight: bold;
+        margin-bottom: 5px;
+        margin-top: 50px;
+    }
+
+    .loader-container {
+        /* Breite des Fortschrittsbalken-Containers */
+        position: relative;
+    }
+
+    .loader-bg {
+        width: 100%; /* Der graue Hintergrundbalken erstreckt sich über die volle Breite */
+        height: 4px; /* Höhe des Fortschrittsbalkens */
+        border-radius: 30px; /* Abgerundete Ecken */
+        background-color: rgba(0, 0, 0, 0.2); /* Graue Hintergrundfarbe */
+    }
+
+    .loader {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%; /* Die Höhe des Fortschrittsbalkens ist dieselbe wie die des Hintergrunds */
+        border-radius: 30px
+    }
+    .table-container {
+            width: 700px;
+            overflow-x: auto;
+            border: 1px solid #ddd;
+        }
+</style>
+
+<body>
+<div class="zentriert" style="margin-bottom: 20px; margin-top: 50px">
+    {{wine | safe}}
+    {{info | safe}}
+    {{recommendation | safe}}
+</div>
+</body>
+</html>

@@ -15,3 +15,14 @@ async def main_page(request: Request):
     except FileNotFoundError:
         return HTMLResponse(content="File not found", status_code=404)
 
+@router.get("/{wine}", response_class=HTMLResponse)
+async def main_page(request: Request, wine: str):
+    wineBottles = WineBottle()
+    title = wineBottles.getWineTitel(wine)
+    info = wineBottles.getInfo(wine)
+    recommendation = wineBottles.getRecommendation(wine)
+    try:
+        return templates.TemplateResponse("wine.html",{"request": request, "wine": title, "info": info, "recommendation": recommendation, })
+    except FileNotFoundError:
+        return HTMLResponse(content="File not found", status_code=404)
+

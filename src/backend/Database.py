@@ -36,3 +36,32 @@ class Database:
             "WHERE Produkt.K_ID = 0; ")
         rows = cursor.fetchall()
         return rows
+
+    def getWineInfo(self, wine):
+        cursor = self.connection.cursor()
+        cursor.execute(
+            "SELECT Produkt.* FROM Produkt WHERE Produkt.Name = %s;",
+            (wine,)
+        )
+
+        row = cursor.fetchall()
+        return row
+
+    def getSpezification(self, wine):
+        cursor = self.connection.cursor()
+        cursor.execute(
+            "SELECT Spezifikation.* FROM Spezifikation WHERE Spezifikation.P_ID = %s;",
+            (wine,)
+        )
+        row = cursor.fetchall()
+        return row
+
+    def getRecommendation(self, wine):
+        id = self.getWineInfo(wine)
+        cursor = self.connection.cursor()
+        cursor.execute(
+            "SELECT Spezifikation.Recommendation FROM Spezifikation WHERE Spezifikation.P_ID = %s;",
+            (id[0][0],)
+        )
+        row = cursor.fetchall()
+        return row
