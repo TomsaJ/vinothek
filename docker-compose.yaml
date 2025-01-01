@@ -13,3 +13,5 @@ services:
       - DB_NAME=Vino
     command: python main.py
     network_mode: host
+    ports:
+      - "8000:8000"

@@ -20,9 +20,11 @@ async def main_page(request: Request, wine: str):
     wineBottles = WineBottle()
     title = wineBottles.getWineTitel(wine)
     info = wineBottles.getInfo(wine)
+    tasteCharacteristics = wineBottles.getTasteCharacteristics(wine)
     recommendation = wineBottles.getRecommendation(wine)
+
     try:
-        return templates.TemplateResponse("wine.html",{"request": request, "wine": title, "info": info, "recommendation": recommendation, })
+        return templates.TemplateResponse("wine.html",{"request": request, "wine": title, "info": info, "recommendation": recommendation, "tasteCharacteristics": tasteCharacteristics })
     except FileNotFoundError:
         return HTMLResponse(content="File not found", status_code=404)
 

@@ -1,8 +1,10 @@
 import os.path
 
 from src.backend.Database import Database
+from src.frontend.IconAndImage import IconAndImage
 
 database = Database()
+iconAndImage = IconAndImage()
 
 class WineBottle:
 
@@ -31,10 +33,10 @@ class WineBottle:
                         <div class="etikett">
                             <p>{vino[2]}</p>
                             <br>
-                            <img src="{self.getCountry(vino[7])}" width="18px" height="18px" >
+                            <img src="{iconAndImage.getCountry(vino[7])}" width="18px" height="18px" >
                             <br>
                             <br>
-                            <!--<p>{vino[7]}</p>-->
+                            <p>{vino[8]}</p>
                         </div>
                         <div class="korken"></div>
                     </div>
@@ -58,7 +60,7 @@ class WineBottle:
 
         # Spezifikationen extrahieren
         data = [
-            ("Herkunft", getInfo[0][2], self.getCountry(getInfo[0][2])),
+            ("Herkunft", getInfo[0][2], iconAndImage.getCountry(getInfo[0][2])),
             ("Jahr", getInfo[0][3], "static/resource/icon/jahrgang.png"),
             ("Alkoholgehalt", f"{getInfo[0][4]} %" if getInfo[0][4] != '' else '', "static/resource/icon/wein.png"),
             ("Rebsorte", getInfo[0][5], "static/resource/icon/trauben.png"),
@@ -91,12 +93,11 @@ class WineBottle:
         return htmlContent
 
     def getWineTitel(self, wine):
-        db = Database()
-        bottle = db.getWineInfo(wine)
-        if bottle[0][6] == '':
-            bottle = '<img src="/static/resource/wine-bottle/default/wine-bottle.png" width="128px" height="128px"><h2>' + wine + '</h2><h3 style="margin-bottom: 50px">' + bottle[0][3] + '</h3>'
+        bottle = database.getWineInfo(wine)
+        if bottle[0][6] is None or bottle[0][6] == '':
+            bottle = '<img src="/static/resource/wine-bottle/default/wine-bottle.png" width="128px" height="128px"><h1>' + wine + '</h1><h2 style="margin-bottom: 50px">' + bottle[0][3] + '</h2>'
         else:
-            bottle = '<img src="/static/resource/wine-bottle/custom/' + bottle[0][6] + '" width="128px" height="128px"><h2>' + wine + '</h2><h3 style="margin-bottom: 50px">' + bottle[0][3] + '</h3>'
+            bottle = '<img src="/static/resource/wine-bottle/custom/' + bottle[0][6] + '" width="128px" height="128px"><h1>' + wine + '</h1><h2 style="margin-bottom: 50px">' + bottle[0][3] + '</h2>'
         return bottle
 
     def getRecommendation(self, wine):
@@ -104,12 +105,12 @@ class WineBottle:
         recommendation = database.getRecommendation(wine)  # Liste mit Tupel, z.B. [('Nudel, Rind',)]
 
         # String aus dem Tupel extrahieren und in eine Liste umwandeln
-        recommendation_list = recommendation[0][0].split(', ')  # ['Nudel', 'Rind']
+        recommendation_list = recommendation[0][0].split(',')  # ['Nudel', 'Rind']
 
         # HTML-Tabelle als String vorbereiten
         html_table = """
-        <divstyle="overflow-x: auto;">
-            <table  style="width: 100%; min-width: 700px;border-collapse: collapse;">
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; min-width: 100%; border-collapse: collapse; table-layout: fixed;">
                 <tr>
                     {images}
                 </tr>
@@ -121,11 +122,11 @@ class WineBottle:
         """
 
         images = ''.join(
-            f'<th style="padding: 8px; text-align: center;"><img src="{self.getFood(item)}" alt="{item}" width="100px" height="auto"></th>'
+            f'<th style="padding: 8px; text-align: center; width: 50%;"><img src="{iconAndImage.getFood(item)}" alt="{item}" width="100px" height="100px"></th>'
             for item in recommendation_list
         )
         labels = ''.join(
-            f'<td style="padding: 8px; text-align: center;">{item}</td>'
+            f'<td style="padding: 8px; text-align: center; width: 50%;">{item}</td>'
             for item in recommendation_list
         )
 
@@ -135,49 +136,40 @@ class WineBottle:
         # Rückgabe der HTML-Tabelle als String
         return html_table
 
-    def getCountry(self,country):
-        # Mapping von Ländernamen zu den entsprechenden Dateinamen (alle in Kleinbuchstaben)
-        country_icons = {
-            "italien": "italy.png",
-            "deutschland": "germany.png",
-            "frankreich": "france.png",
-            "spanien": "spain.png",
-            # Weitere Länder können hier hinzugefügt werden
-        }
 
-        # Den übergebenen Ländernamen in Kleinbuchstaben umwandeln
-        country = country.lower()
+    def getTasteCharacteristics(self, wine):
+        row = database.getTasteCharacteristics(wine)
+        if row != None:
+            htmlContent = (f"<tr>"
+                       f"<td>Leicht</td>"
+                       f"<td><div class='slider-container'><div class='slider-thumb' style='left: calc("+str(row[0][2]*10)+"% - 50px);'></div></div></td>"
+                       f"<td>Kräftig</td>"
+                       f"</tr>")
 
-        # Überprüfen, ob das Land im Mapping existiert
-        if country in country_icons:
-            # Pfad zum Icon
-            icon_path = f"/static/resource/country/map/{country_icons[country]}"
-            return icon_path
+            htmlContent += (f"<tr>"
+                       f"<td>Flexibel</td>"
+                       f"<td><div class='slider-container'><div class='slider-thumb' style='left: calc(" + str(
+                    row[0][3] * 10) + "% - 50px);'></div></div></td>"
+                                                     f"<td>Tranninhalting</td>"
+                                                     f"</tr>")
+            htmlContent += (f"<tr>"
+                        f"<td>Trocken</td>"
+                        f"<td><div class='slider-container'><div class='slider-thumb' style='left: calc(" + str(
+                                row[0][4] * 10) + "% - 50px);'></div></div></td>"
+                                                  f"<td>Süß</td>"
+                                                  f"</tr>")
+
+            htmlContent += (f"<tr>"
+                        f"<td>Sanft</td>"
+                        f"<td><div class='slider-container'><div class='slider-thumb' style='left: calc(" + str(
+                                row[0][5] * 10) + "% - 50px);'></div></div></td>"
+                                                  f"<td>Säure</td>"
+                                                  f"</tr>")
         else:
-            # Fallback oder Fehlerbehandlung
-            return "/resource/404-fehler.png"  # Ein Standard-Icon, falls kein Match gefunden wird
-
-    def getFood(self,food):
-        # Mapping von Ländernamen zu den entsprechenden Dateinamen (alle in Kleinbuchstaben)
-        food_icons = {
-            "nudeln": "nudeln.png",
-            "rind": "steak.png",
-            "frankreich": "france.png",
-            "spanien": "spain.png",
-            # Weitere Länder können hier hinzugefügt werden
-        }
-
-        # Den übergebenen Ländernamen in Kleinbuchstaben umwandeln
-        food = food.lower()
-
-        # Überprüfen, ob das Land im Mapping existiert
-        if food in food_icons:
-            # Pfad zum Icon
-            icon_path = f"/static/resource/food/{food_icons[food]}"
-            return icon_path
-        else:
-            # Fallback oder Fehlerbehandlung
-            return "/static/resource/404-fehler.png"  # Ein Standard-Icon, falls kein Match gefunden wird
-
-
+            htmlContent = (f"<tr>"
+                            f"<td></td>"
+                            f"<td>Keine Geschmacksmerkmale vorhanden</td>"
+                            f"<td></td>"
+                            f"</tr>")
+        return htmlContent
 
