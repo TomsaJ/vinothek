@@ -5,3 +5,4 @@ pymysql
 itsdangerous
 jinja2
 mysql-connector-python
+python-multipart

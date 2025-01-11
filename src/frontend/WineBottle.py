@@ -136,7 +136,6 @@ class WineBottle:
         # Rückgabe der HTML-Tabelle als String
         return html_table
 
-
     def getTasteCharacteristics(self, wine):
         row = database.getTasteCharacteristics(wine)
         if row != None:
@@ -172,4 +171,3 @@ class WineBottle:
                             f"<td></td>"
                             f"</tr>")
         return htmlContent
-

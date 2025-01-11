@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/css/style.css') }}">
+    <title>Weinregal</title>
+</head>
+<style>
+
+  .zentriert {
+    width: 100%; /* Die Breite des Elements wird auf 100% des Viewports gesetzt */
+    max-width: 1200px; /* Das Element wird nicht breiter als 600 Pixel */
+    margin: 0 auto;
+    text-align: center;
+}
+
+  /* From Uiverse.io by Yaya12085 */
+.form {
+  max-width: 400px;
+  width: 100%;
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0px 0px 0px 4px rgba(52, 52, 53, 0.185);
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  align-items: center;
+
+}
+
+.title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #1a202c;
+}
+
+.label {
+  color: rgb(0, 0, 0);
+  margin-bottom: 4px;
+}
+
+.input {
+  padding: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+  font-size: 1rem;
+  color: #4a5568;
+  outline: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+}
+
+.input:focus {
+  background-color: #fff;
+  box-shadow: 0 0 0 2px #cbd5e0;
+}
+
+.input:valid {
+  border: 1px solid green;
+}
+
+.input:invalid {
+  border: 1px solid rgba(14, 14, 14, 0.205);
+}
+
+.submit {
+  background-color: #1a202c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+
+
+</style>
+<body>
+<h1>Neuen Wein hinzufügen</h1>
+
+<div class="zentriert" style="margin-bottom: 20px; margin-top: 50px">
+<form class="form" style="display: flex; margin-left: auto; margin-right: auto; " action="/addnewWine" method="POST" enctype="multipart/form-data">
+    <span class="title">Neuer Wein</span>
+    <label for="wineArt" class="label">Weinart</label>
+    <select id="wineArt" name="wineArt" style="margin-top: 10px;" class="input" required>
+                            <option value="" disabled selected>Bitte auswählen ...</option>
+                            <option value="homeWine">Hauswein</option>
+                            <option value="redWine">Rotwein</option>
+                            <option value="whiteWine">Weißwein</option>
+                        </select>
+
+    <label for="winename" class="label">Wein</label>
+    <input type="text" id="winename" name="winename" required="" class="input">
+    <label for="producer" class="label">Hersteller</label>
+    <input type="text" id="producer" name="producer" required="" class="input">
+    <label for="country" class="label">Land</label>
+    <input type="text" id="country" name="country" required="" class="input">
+    <label for="vintageYear" class="label">Jahrgang</label>
+    <input type="text" id="vintageYear" name="vintageYear" required="" class="input">
+    <label for="alcoholContent" class="label">Alkoholgehalt</label>
+    <input type="number" id="alcoholContent" name="alcoholContent" min="0.0" max="100.0" step="0.5" required="" class="input">
+    <label for="dekrantieren" class="label">Dekrantieren</label>
+    <input type="text" id="dekrantieren" name="dekrantieren" required="" class="input" placeholder="in Minuten (30-60)">
+    <label for="temp" class="label">Temperatur</label>
+    <input type="text" id="temp" name="temp" required="" class="input" placeholder="in °C (16-18)">
+    <label for="rec" class="label">Empfehlung</label>
+    <input type="text" id="rec" name="rec" required="" class="input" placeholder="b.z. Nudeln,Rind ohne Leerzeichen">
+    <label for="image" class="label">Foto hochladen</label>
+    <input type="file" id="image" name="image" accept="image/*"  class="input">
+
+    <label for="trockensueß">Wähle einen Wert:</label>
+        <div style="width: 100%;">
+            <span>Süß</span>
+            <input style="width: 60%" type="range" id="trockensueß" name="trockensueß" min="0" max="10" value="5" step="1">
+            <span>Trocken</span>
+        </div>
+
+    <label for="leichtkraeftig"></label>
+        <div style="width: 100%;">
+            <span>Leicht</span>
+            <input style="width: 60%" type="range" id="leichtkraeftig" name="leichtkraeftig" min="0" max="10" value="5" step="1">
+            <span>Kräftig</span>
+        </div>
+
+    <label for="flexibelTranninhalt"></label>
+        <div style="width: 100%;">
+            <span>FLexibel</span>
+            <input style="width: 60%" type="range" id="flexibelTranninhalt" name="flexibelTranninhalt" min="0" max="10" value="5" step="1">
+            <span>Tranninhalt</span>
+        </div>
+
+    <label for="sanftSaeure"></label>
+        <div style="width: 100%;">
+            <span>Sanft</span>
+            <input style="width: 60%" type="range" id="sanftSaeure" name="sanftSaeure" min="-1" max="10" value="5" step="1">
+            <span>Säure</span>
+        </div>
+
+
+    <button type="submit" class="submit">Register</button>
+  </form>
+</div>
+</body>
+</html>

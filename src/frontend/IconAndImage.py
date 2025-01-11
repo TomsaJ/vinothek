@@ -30,6 +30,7 @@ class IconAndImage:
         food_icons = {
             "nudeln": "pasta.png",
             "rindfleisch": "steak.png",
+            "softCheese": "softCheese.png",
             # Weitere Gerichte können hier hinzugefügt werden
         }
 
