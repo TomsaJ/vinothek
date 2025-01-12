@@ -16,13 +16,15 @@ router = APIRouter()
 
 @router.get("/", response_class=HTMLResponse)
 async def main_page(request: Request):
-    wineBottles = WineBottle()
-    wine = wineBottles.getBottle()
     try:
-        return templates.TemplateResponse("index.html",{"request": request, "wine": wine})
-    except FileNotFoundError:
-        return HTMLResponse(content="File not found", status_code=404)
-
+        wineBottles = WineBottle()
+        wine = wineBottles.getBottle()
+        try:
+            return templates.TemplateResponse("index.html",{"request": request, "wine": wine})
+        except FileNotFoundError:
+            return templates.TemplateResponse("error/404.html", {"request": request}, status_code=404)
+    except Exception as e:
+        return templates.TemplateResponse("error/404.html", {"request": request}, status_code=404)
 @router.get("/newWine", response_class=HTMLResponse)
 async def addNewWine(request: Request):
     try:
@@ -30,7 +32,7 @@ async def addNewWine(request: Request):
     except FileNotFoundError:
         return HTMLResponse(content="File not found", status_code=404)
 
-@router.post("/addnewWine", response_class=HTMLResponse)
+@router.post("/addNewWine", response_class=HTMLResponse)
 async def addNewWine(request: Request,
 wineArt: str = Form(...),
     winename: str = Form(...),
@@ -95,13 +97,19 @@ wineArt: str = Form(...),
 
 @router.get("/{wine}", response_class=HTMLResponse)
 async def mainPageWithWine(request: Request, wine: str):
-    wineBottles = WineBottle()
-    title = wineBottles.getWineTitel(wine)
-    info = wineBottles.getInfo(wine)
-    tasteCharacteristics = wineBottles.getTasteCharacteristics(wine)
-    recommendation = wineBottles.getRecommendation(wine)
     try:
-        return templates.TemplateResponse("wine.html",{"request": request, "wine": title, "info": info, "recommendation": recommendation, "tasteCharacteristics": tasteCharacteristics })
-    except FileNotFoundError:
-        return HTMLResponse(content="File not found", status_code=404)
+        wineBottles = WineBottle()
+        title = wineBottles.getWineTitel(wine)
+        info = wineBottles.getInfo(wine)
+        tasteCharacteristics = wineBottles.getTasteCharacteristics(wine)
+        recommendation = wineBottles.getRecommendation(wine)
+        try:
+            return templates.TemplateResponse("wine.html",{"request": request, "wine": title, "info": info, "recommendation": recommendation, "tasteCharacteristics": tasteCharacteristics })
+        except FileNotFoundError:
+            templates.TemplateResponse("error/404.html", {"request": request}, status_code=404)
+    except Exception as e:
+        return templates.TemplateResponse("error/500.html", {"request": request}, status_code=404)
 
+@router.get("/{path:path}")
+async def fallback(request: Request, path: str):
+    return templates.TemplateResponse("error/404.html", {"request": request}, status_code=404)
