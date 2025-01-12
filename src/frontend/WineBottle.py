@@ -24,7 +24,7 @@ class WineBottle:
     def getBottleHtml(self, vino):
         bottle = ''
         for _ in range(vino[5]):
-            if vino[6] == None or os.path.exists(vino[6] == None):
+            if vino[6] is '' or os.path.exists("static/resource/wine-bottle/custom/" + vino[6]) is None:
                 bottle += ''.join([
                 f"""
                     <div class="flasche" onclick="location.href='/{vino[2]}'">
@@ -43,9 +43,8 @@ class WineBottle:
                     """])
             else:
                 bottle += ''.join([f"""
-                    <div onclick="location.href='/{vino[2]}'">
-                        <img src='{vino[3]}' alt='{vino[4]}'></div>
-                    </div>
+                    <div style='width: 50px; height: 250px; margin: 10px; margin-top: 50px' onclick="location.href='/{vino[2]}'">
+                        <img style='width: 50px; height: 250px' src='static/resource/wine-bottle/custom/{vino[6]}' alt='{vino[4]}'></div>
                     """])
         return bottle
 

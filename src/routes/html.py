@@ -108,7 +108,7 @@ async def mainPageWithWine(request: Request, wine: str):
         except FileNotFoundError:
             templates.TemplateResponse("error/404.html", {"request": request}, status_code=404)
     except Exception as e:
-        return templates.TemplateResponse("error/500.html", {"request": request}, status_code=404)
+        return templates.TemplateResponse("error/404.html", {"request": request}, status_code=404)
 
 @router.get("/{path:path}")
 async def fallback(request: Request, path: str):
